@@ -1,5 +1,11 @@
 import * as THREE from 'three'
 
+//Cursor
+window.addEventListener('mousemove', (event)=>{
+    console.log(event.clientX)
+})
+
+
 /**
  * Base
  */
