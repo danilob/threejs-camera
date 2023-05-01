@@ -10,6 +10,14 @@ window.addEventListener('mousemove', (event)=>{
     cursor.y = -(event.clientY / sizes.height - 0.5)
 })
 
+window.addEventListener('keypress', (event)=>{
+    if(event.code == 'KeyO'){
+        controls.target.set(0,0,0) 
+        camera.position.set(0,0,2)
+    }
+    
+})
+
 
 /**
  * Base
@@ -33,9 +41,13 @@ const mesh = new THREE.Mesh(
 )
 scene.add(mesh)
 
+const axis = new THREE.AxesHelper(2)
+scene.add(axis)
+
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height,0.1,100)
 const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 // const aspectRatio = sizes.width/sizes.height
 
 // const camera = new THREE.OrthographicCamera(
@@ -48,7 +60,7 @@ const controls = new OrbitControls(camera, canvas)
 // camera.position.x = 2
 // camera.position.y = 2
 camera.position.z = 2
-camera.lookAt(mesh.position)
+
 scene.add(camera)
 
 // Renderer
@@ -71,6 +83,10 @@ const tick = () =>
     // camera.position.y = cursor.y * 5
     // camera.lookAt(mesh.position)
 
+    // Update Controls
+    controls.update()
+
+    // Render
     // Render
     renderer.render(scene, camera)
 
