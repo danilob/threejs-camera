@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls'
 //Cursor
 const cursor = {
     x: 0,
@@ -35,6 +35,7 @@ scene.add(mesh)
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height,0.1,100)
+const controls = new OrbitControls(camera, canvas)
 // const aspectRatio = sizes.width/sizes.height
 
 // const camera = new THREE.OrthographicCamera(
@@ -65,10 +66,10 @@ const tick = () =>
 
     // Update objects
     // mesh.rotation.y = elapsedTime;
-    camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3
-    camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3
-    camera.position.y = cursor.y * 5
-    camera.lookAt(mesh.position)
+    // camera.position.x = Math.sin(cursor.x * Math.PI * 2) * 3
+    // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3
+    // camera.position.y = cursor.y * 5
+    // camera.lookAt(mesh.position)
 
     // Render
     renderer.render(scene, camera)
