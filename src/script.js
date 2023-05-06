@@ -1,5 +1,5 @@
 import * as THREE from 'three'
-
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 /**
  * Base
  */
@@ -8,8 +8,8 @@ const canvas = document.querySelector('canvas.webgl')
 
 // Sizes
 const sizes = {
-    width: 800,
-    height: 600
+    width: window.innerWidth,
+    height: window.innerHeight
 }
 
 // Scene
@@ -24,8 +24,11 @@ scene.add(mesh)
 
 // Camera
 const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height,0.1,100)
-camera.position.x = 2
-camera.position.y = 2
+// camera.position.x = 2
+// camera.position.y = 2
+// camera.position.z = 2
+// const aspectRatio = sizes.width / sizes.height
+// const camera = new THREE.OrthographicCamera(- 1*aspectRatio, 1*aspectRatio, 1, - 1, 2, 100)
 camera.position.z = 2
 camera.lookAt(mesh.position)
 scene.add(camera)
@@ -36,6 +39,55 @@ const renderer = new THREE.WebGLRenderer({
 })
 renderer.setSize(sizes.width, sizes.height)
 
+// Controls
+const controls = new OrbitControls(camera, canvas)
+
+controls.enableDamping = true
+
+let darkMode = true
+
+window.addEventListener('keypress',(event)=>{
+    if(event.code == 'KeyR'){
+        camera.position.set(0,0,2)
+        controls.target.set(0,0,0)
+    }
+
+    if (event.code == 'KeyO'){
+        (darkMode) ? 
+            renderer.setClearColor( 0xffffff, 1): 
+            renderer.setClearColor( 0x000000, 1)
+        darkMode = !darkMode
+    }
+})
+
+window.addEventListener('resize', () =>
+{
+    // Update sizes
+    sizes.width = window.innerWidth
+    sizes.height = window.innerHeight
+		// Update camera
+    camera.aspect = sizes.width / sizes.height
+		camera.updateProjectionMatrix()
+    // Update renderer
+    renderer.setSize(sizes.width, sizes.height)
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+})
+
+window.addEventListener('dblclick', () =>
+{
+    if(!document.fullscreenElement)
+    {
+        canvas.requestFullscreen()
+    }
+    else
+    {
+        document.exitFullscreen()
+    }
+})
+
+
+
+
 // Animate
 const clock = new THREE.Clock()
 
@@ -45,6 +97,7 @@ const tick = () =>
 
     // Update objects
     mesh.rotation.y = elapsedTime;
+    controls.update()
 
     // Render
     renderer.render(scene, camera)
